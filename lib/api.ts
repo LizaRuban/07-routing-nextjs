@@ -9,6 +9,7 @@ export interface FetchNotesResponse {
 
 export async function fetchNotes(
   searchText: string,
+  tag: string,
   page: number,
   perPage: number
 ): Promise<FetchNotesResponse> {
@@ -19,6 +20,7 @@ export async function fetchNotes(
         page,
         perPage,
         search: searchText || undefined,
+        tag: tag !== 'all' ? tag : undefined,
       },
       headers: {
         Authorization: `Bearer ${token}`,

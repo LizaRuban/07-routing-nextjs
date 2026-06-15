@@ -3,7 +3,7 @@
 import css from './NotesPage.module.css';
 import { useState, useEffect } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
-import { fetchNotes } from '../../lib/api';
+import { fetchNotes } from '../../../../lib/api';
 import { toast } from 'sonner';
 import type { Note } from '@/types/note';
 import NoteList from '@/components/NoteList/NoteList';
@@ -15,7 +15,11 @@ import Loader from '@/components/Loader/Loader';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import NoteForm from '@/components/NoteForm/NoteForm';
 
-export default function NotesClient() {
+interface NotesClientProps {
+  tag: string;
+}
+
+export default function NotesClient({ tag }: NotesClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,8 +30,8 @@ export default function NotesClient() {
   }, 1000);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['notes', search, currentPage],
-    queryFn: () => fetchNotes(search, currentPage, 12),
+    queryKey: ['notes', search, tag, currentPage],
+    queryFn: () => fetchNotes(search, tag, currentPage, 12),
     placeholderData: keepPreviousData,
   });
 
